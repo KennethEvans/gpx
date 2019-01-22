@@ -9,6 +9,7 @@
 package net.kenevans.gpxcombined;
 
 import java.math.BigDecimal;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
