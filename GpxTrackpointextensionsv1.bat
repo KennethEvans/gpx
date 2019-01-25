@@ -3,7 +3,7 @@ rem DEST_DIR must already exist
 
 set XJC=C:\Java\JDK\jdk1.6.0_20\bin\xjc.exe
 set XSD_DIR=C:\eclipseWorkspaces\Work\net.kenevans.gpx
-set DEST_DIR=C:\Scratch\GPX-GpxTrackpointextensionsv1-XSD
+set DEST_DIR=C:\Scratch\GPX\GPX-GpxTrackpointextensionsv1-XSD
 set PACKAGE=net.kenevans.gpxtrackpointextensionsv1
 
 cd "%XSD_DIR%"

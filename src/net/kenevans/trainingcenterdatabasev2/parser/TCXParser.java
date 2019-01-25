@@ -35,7 +35,8 @@ public class TCXParser
     /** Hard-coded file name for testing with the main method. */
     // private static final String TEST_FILE =
     // "C:/Users/evans/Documents/GPSLink/Polar/Kenneth_Evans_2018-08-10_09-02-44.tcx";
-    private static final String TEST_FILE = "C:/Users/evans/Documents/GPSLink/Polar/Kenneth_Evans_2019-01-21_14-50-53.tcx";
+//    private static final String TEST_FILE = "C:/Users/evans/Documents/GPSLink/Polar/Kenneth_Evans_2019-01-21_14-50-53.tcx";
+    private static final String TEST_FILE = "C:/Users/evans/Documents/GPSLink/FitnessHistoryDetail.tcx";
 
     /** This is the package specified when XJC was run. */
     private static String TRAINING_CENTER_DATABASE_V2_PACKAGE = "net.kenevans.trainingcenterdatabasev2";
@@ -165,10 +166,19 @@ public class TCXParser
             creator = activity.getCreator();
             creatorName = creator.getName();
             training = activity.getTraining();
-            plan = training.getPlan();
-            trainingType = plan.getType();
-            trainingPlanName = plan.getName();
-            trainingPlanType = trainingType.value();
+            trainingType = null;
+            trainingPlanName=null;
+            trainingPlanType = null;
+            if (training != null) {
+                plan = training.getPlan();
+                if (plan != null) {
+                    trainingType = plan.getType();
+                    trainingPlanName = plan.getName();
+                    if(trainingType != null) {
+                        trainingPlanType = trainingType.value();
+                    }
+                }
+            }
             System.out.println("Activity : " + id + " creator=" + creatorName);
             System.out.println(
                 "  Plan: " + trainingPlanName + " Type: " + trainingPlanType);
