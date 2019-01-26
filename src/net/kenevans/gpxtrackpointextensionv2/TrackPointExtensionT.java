@@ -5,27 +5,27 @@
 // Generated on: 2019.01.24 at 10:55:02 PM EST 
 //
 
+
 package net.kenevans.gpxtrackpointextensionv2;
 
 import java.math.BigDecimal;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
+
 /**
  * 
- * This type contains data fields that cannot be represented in track points in
- * GPX 1.1 instances.
+ *     This type contains data fields that cannot
+ *     be represented in track points in GPX 1.1 instances.
+ *     
  * 
+ * <p>Java class for TrackPointExtension_t complex type.
  * 
- * <p>
- * Java class for TrackPointExtension_t complex type.
- * 
- * <p>
- * The following schema fragment specifies the expected content contained within
- * this class.
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
  * &lt;complexType name="TrackPointExtension_t">
@@ -50,11 +50,19 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement
 @XmlType(name = "TrackPointExtension_t", namespace = "http://www.garmin.com/xmlschemas/TrackPointExtension/v2", propOrder = {
-    "atemp", "wtemp", "depth", "hr", "cad", "speed", "course", "bearing",
-    "extensions"})
-public class TrackPointExtensionT
-{
+    "atemp",
+    "wtemp",
+    "depth",
+    "hr",
+    "cad",
+    "speed",
+    "course",
+    "bearing",
+    "extensions"
+})
+public class TrackPointExtensionT {
 
     protected Double atemp;
     protected Double wtemp;
@@ -72,8 +80,10 @@ public class TrackPointExtensionT
     /**
      * Gets the value of the atemp property.
      * 
-     * @return possible object is {@link Double }
-     * 
+     * @return
+     *     possible object is
+     *     {@link Double }
+     *     
      */
     public Double getAtemp() {
         return atemp;
@@ -82,8 +92,10 @@ public class TrackPointExtensionT
     /**
      * Sets the value of the atemp property.
      * 
-     * @param value allowed object is {@link Double }
-     * 
+     * @param value
+     *     allowed object is
+     *     {@link Double }
+     *     
      */
     public void setAtemp(Double value) {
         this.atemp = value;
@@ -92,8 +104,10 @@ public class TrackPointExtensionT
     /**
      * Gets the value of the wtemp property.
      * 
-     * @return possible object is {@link Double }
-     * 
+     * @return
+     *     possible object is
+     *     {@link Double }
+     *     
      */
     public Double getWtemp() {
         return wtemp;
@@ -102,8 +116,10 @@ public class TrackPointExtensionT
     /**
      * Sets the value of the wtemp property.
      * 
-     * @param value allowed object is {@link Double }
-     * 
+     * @param value
+     *     allowed object is
+     *     {@link Double }
+     *     
      */
     public void setWtemp(Double value) {
         this.wtemp = value;
@@ -112,8 +128,10 @@ public class TrackPointExtensionT
     /**
      * Gets the value of the depth property.
      * 
-     * @return possible object is {@link Double }
-     * 
+     * @return
+     *     possible object is
+     *     {@link Double }
+     *     
      */
     public Double getDepth() {
         return depth;
@@ -122,8 +140,10 @@ public class TrackPointExtensionT
     /**
      * Sets the value of the depth property.
      * 
-     * @param value allowed object is {@link Double }
-     * 
+     * @param value
+     *     allowed object is
+     *     {@link Double }
+     *     
      */
     public void setDepth(Double value) {
         this.depth = value;
@@ -132,8 +152,10 @@ public class TrackPointExtensionT
     /**
      * Gets the value of the hr property.
      * 
-     * @return possible object is {@link Short }
-     * 
+     * @return
+     *     possible object is
+     *     {@link Short }
+     *     
      */
     public Short getHr() {
         return hr;
@@ -142,8 +164,10 @@ public class TrackPointExtensionT
     /**
      * Sets the value of the hr property.
      * 
-     * @param value allowed object is {@link Short }
-     * 
+     * @param value
+     *     allowed object is
+     *     {@link Short }
+     *     
      */
     public void setHr(Short value) {
         this.hr = value;
@@ -152,8 +176,10 @@ public class TrackPointExtensionT
     /**
      * Gets the value of the cad property.
      * 
-     * @return possible object is {@link Short }
-     * 
+     * @return
+     *     possible object is
+     *     {@link Short }
+     *     
      */
     public Short getCad() {
         return cad;
@@ -162,8 +188,10 @@ public class TrackPointExtensionT
     /**
      * Sets the value of the cad property.
      * 
-     * @param value allowed object is {@link Short }
-     * 
+     * @param value
+     *     allowed object is
+     *     {@link Short }
+     *     
      */
     public void setCad(Short value) {
         this.cad = value;
@@ -172,8 +200,10 @@ public class TrackPointExtensionT
     /**
      * Gets the value of the speed property.
      * 
-     * @return possible object is {@link Double }
-     * 
+     * @return
+     *     possible object is
+     *     {@link Double }
+     *     
      */
     public Double getSpeed() {
         return speed;
@@ -182,8 +212,10 @@ public class TrackPointExtensionT
     /**
      * Sets the value of the speed property.
      * 
-     * @param value allowed object is {@link Double }
-     * 
+     * @param value
+     *     allowed object is
+     *     {@link Double }
+     *     
      */
     public void setSpeed(Double value) {
         this.speed = value;
@@ -192,8 +224,10 @@ public class TrackPointExtensionT
     /**
      * Gets the value of the course property.
      * 
-     * @return possible object is {@link BigDecimal }
-     * 
+     * @return
+     *     possible object is
+     *     {@link BigDecimal }
+     *     
      */
     public BigDecimal getCourse() {
         return course;
@@ -202,8 +236,10 @@ public class TrackPointExtensionT
     /**
      * Sets the value of the course property.
      * 
-     * @param value allowed object is {@link BigDecimal }
-     * 
+     * @param value
+     *     allowed object is
+     *     {@link BigDecimal }
+     *     
      */
     public void setCourse(BigDecimal value) {
         this.course = value;
@@ -212,8 +248,10 @@ public class TrackPointExtensionT
     /**
      * Gets the value of the bearing property.
      * 
-     * @return possible object is {@link BigDecimal }
-     * 
+     * @return
+     *     possible object is
+     *     {@link BigDecimal }
+     *     
      */
     public BigDecimal getBearing() {
         return bearing;
@@ -222,8 +260,10 @@ public class TrackPointExtensionT
     /**
      * Sets the value of the bearing property.
      * 
-     * @param value allowed object is {@link BigDecimal }
-     * 
+     * @param value
+     *     allowed object is
+     *     {@link BigDecimal }
+     *     
      */
     public void setBearing(BigDecimal value) {
         this.bearing = value;
@@ -232,8 +272,10 @@ public class TrackPointExtensionT
     /**
      * Gets the value of the extensions property.
      * 
-     * @return possible object is {@link ExtensionsT }
-     * 
+     * @return
+     *     possible object is
+     *     {@link ExtensionsT }
+     *     
      */
     public ExtensionsT getExtensions() {
         return extensions;
@@ -242,8 +284,10 @@ public class TrackPointExtensionT
     /**
      * Sets the value of the extensions property.
      * 
-     * @param value allowed object is {@link ExtensionsT }
-     * 
+     * @param value
+     *     allowed object is
+     *     {@link ExtensionsT }
+     *     
      */
     public void setExtensions(ExtensionsT value) {
         this.extensions = value;
