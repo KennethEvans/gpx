@@ -1,6 +1,7 @@
 package net.kenevans.gpxtrackpointextensionsv1.parser;
 
 import java.io.File;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -90,9 +91,43 @@ public class GPXParser {
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 		// Need to set the schema location to pass Xerces 3.1.1 SaxCount
 		marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION,
-				"http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd");
+				"http://www.topografix.com/GPX/1/1" + " http://www.topografix.com/GPX/1/1/gpx.xsd");
 		// Marshal
 		marshaller.marshal(root, file);
+	}
+
+	/**
+	 * Print a GpxType object into an OutputStream. Should do the same as save()
+	 * except the last line write tot the OutputStream instead of a File.
+	 * 
+	 * @param gpx
+	 * @param out
+	 * @throws JAXBException
+	 */
+	public static void print(String creator, GpxType gpx, OutputStream out) throws JAXBException {
+		// The code here should be the same as in save except for the last line.
+
+		// Set the creator
+		if (creator != null) {
+			gpx.setCreator(creator);
+		}
+		// Reset the version
+		gpx.setVersion("1.1");
+
+		// Create a new JAXBElement<GpxType> for the marshaller
+		QName qName = new QName("http://www.topografix.com/GPX/1/1", "gpx");
+		JAXBElement<GpxType> root = new JAXBElement<GpxType>(qName, GpxType.class, gpx);
+		// Create a context
+		JAXBContext jc = JAXBContext.newInstance(GPX_TRACKPOINTEXTENSIONSV1_PACKAGE);
+		// Create a marshaller
+		Marshaller marshaller = jc.createMarshaller();
+		// Set it to be formatted, otherwise it is one long line
+		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+		// Need to set the schema location to pass Xerces 3.1.1 SaxCount
+		marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION,
+				"http://www.topografix.com/GPX/1/1" + " http://www.topografix.com/GPX/1/1/gpx.xsd");
+		// Marshal
+		marshaller.marshal(root, out);
 	}
 
 	/**
@@ -488,59 +523,59 @@ public class GPXParser {
 				ext = track.getExtensions();
 				System.out.println("  Track extensions=" + ext);
 
-			// Trackpoints
-			System.out.println("  Trackpoints");
-			segments = track.getTrkseg();
-			if (segments == null) {
-				continue;
-			}
-			for (TrksegType segment : segments) {
-				trackpoints = segment.getTrkpt();
-				if (trackpoints == null) {
+				// Trackpoints
+				System.out.println("  Trackpoints");
+				segments = track.getTrkseg();
+				if (segments == null) {
 					continue;
 				}
-				for (int j = 0; j < trackpoints.size(); j++) {
-					trackpoint = trackpoints.get(j);
-					System.out.println("    Trackpoint " + j);
-					lat = trackpoint.getLat();
-					System.out.println("      lat=" + lat);
-					lon = trackpoint.getLon();
-					System.out.println("      lon=" + lon);
-					ele = trackpoint.getEle();
-					System.out.println("      ele=" + ele);
-					// See if there is an extension
-					tpExt = trackpoint.getExtensions();
-					System.out.println("      Trackpoint extensions " + j + "=" + tpExt);
-					if (tpExt != null) {
-						tpObjs = tpExt.getAny();
-						for (int i = 0; i < tpObjs.size(); i++) {
-							tpObj = tpObjs.get(i);
-							System.out.println("        Trackpoint extension obj " + i + ": " + tpObj);
-							trackPointExt = null;
-							if (tpObj instanceof JAXBElement<?>) {
-								JAXBElement<?> element = (JAXBElement<?>) tpObj;
-								if (element != null && (element.getValue() instanceof TrackPointExtensionT)) {
-									trackPointExt = (TrackPointExtensionT) element.getValue();
+				for (TrksegType segment : segments) {
+					trackpoints = segment.getTrkpt();
+					if (trackpoints == null) {
+						continue;
+					}
+					for (int j = 0; j < trackpoints.size(); j++) {
+						trackpoint = trackpoints.get(j);
+						System.out.println("    Trackpoint " + j);
+						lat = trackpoint.getLat();
+						System.out.println("      lat=" + lat);
+						lon = trackpoint.getLon();
+						System.out.println("      lon=" + lon);
+						ele = trackpoint.getEle();
+						System.out.println("      ele=" + ele);
+						// See if there is an extension
+						tpExt = trackpoint.getExtensions();
+						System.out.println("      Trackpoint extensions " + j + "=" + tpExt);
+						if (tpExt != null) {
+							tpObjs = tpExt.getAny();
+							for (int i = 0; i < tpObjs.size(); i++) {
+								tpObj = tpObjs.get(i);
+								System.out.println("        Trackpoint extension obj " + i + ": " + tpObj);
+								trackPointExt = null;
+								if (tpObj instanceof JAXBElement<?>) {
+									JAXBElement<?> element = (JAXBElement<?>) tpObj;
+									if (element != null && (element.getValue() instanceof TrackPointExtensionT)) {
+										trackPointExt = (TrackPointExtensionT) element.getValue();
+									}
+								} else if (tpObj instanceof TrackPointExtensionT) {
+									trackPointExt = (TrackPointExtensionT) tpObj;
 								}
-							} else if (tpObj instanceof TrackPointExtensionT) {
-								trackPointExt = (TrackPointExtensionT) tpObj;
+								if (trackPointExt != null) {
+									if (trackPointExt.getHr() != null) {
+										hr = trackPointExt.getHr();
+										System.out.println("      hr=" + hr);
+									}
+									if (trackPointExt.getCad() != null) {
+										cad = trackPointExt.getCad();
+										System.out.println("      cad=" + cad);
+									}
+								}
 							}
-							if (trackPointExt != null) {
-								if (trackPointExt.getHr() != null) {
-									hr = trackPointExt.getHr();
-									System.out.println("      hr=" + hr);
-								}
-								if (trackPointExt.getCad() != null) {
-									cad = trackPointExt.getCad();
-									System.out.println("      cad=" + cad);
-								}
-							}
-						}
-					} // tpExt != null
-				} // for(int j = 0; j < trackpoints.size(); j++)
-			} // for(TrksegType segment : segments)
-		} // for(TrkType track : tracks)
-	}
+						} // tpExt != null
+					} // for(int j = 0; j < trackpoints.size(); j++)
+				} // for(TrksegType segment : segments)
+			} // for(TrkType track : tracks)
+		}
 
 		if (MARSHALL_OUTPUT) {
 			System.out.println();
@@ -548,24 +583,8 @@ public class GPXParser {
 			gpx.setCreator("GPXParser");
 			// Reset the version
 			gpx.setVersion("1.1");
-
-			try {// Create a new JAXBElement<GpxType> for the marshaller
-				QName qName = new QName("http://www.topografix.com/GPX/1/1", "gpx");
-				JAXBElement<GpxType> root = new JAXBElement<GpxType>(qName, GpxType.class, gpx);
-				// Create a context
-				JAXBContext jc = JAXBContext.newInstance(GPX_TRACKPOINTEXTENSIONSV1_PACKAGE);
-				// Create a marshaller
-				Marshaller marshaller = jc.createMarshaller();
-				// Set it to be formatted, otherwise it is one long line
-				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-				// Need to set the schema location to pass Xerces 3.1.1 SaxCount
-				marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION,
-						"http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd");
-				// Set the Marshaller.JAXB_NO_NAMESPACE_SCHEMA_LOCATION
-				marshaller.setProperty(Marshaller.JAXB_NO_NAMESPACE_SCHEMA_LOCATION,
-						"https://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd");
-				// Marshal
-				marshaller.marshal(root, System.out);
+			try {
+				print("GPXParser", gpx, System.out);
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}

@@ -1,6 +1,7 @@
 package net.kenevans.gpxtrackpointextensionv2.parser;
 
 import java.io.File;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -90,12 +91,43 @@ public class GPXParser {
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 		// Need to set the schema location to pass Xerces 3.1.1 SaxCount
 		marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION,
-				"http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd");
-		// Set the Marshaller.JAXB_NO_NAMESPACE_SCHEMA_LOCATION
-		marshaller.setProperty(Marshaller.JAXB_NO_NAMESPACE_SCHEMA_LOCATION,
-				"https://www.garmin.com/xmlschemas/TrackPointExtensionv2.xsd");
+				"http://www.topografix.com/GPX/1/1" + " http://www.topografix.com/GPX/1/1/gpx.xsd");
 		// Marshal
 		marshaller.marshal(root, file);
+	}
+
+	/**
+	 * Print a GpxType object into an OutputStream. Should do the same as save()
+	 * except the last line write tot the OutputStream instead of a File.
+	 * 
+	 * @param gpx
+	 * @param out
+	 * @throws JAXBException
+	 */
+	public static void print(String creator, GpxType gpx, OutputStream out) throws JAXBException {
+		// The code here should be the same as in save except for the last line.
+
+		// Set the creator
+		if (creator != null) {
+			gpx.setCreator(creator);
+		}
+		// Reset the version
+		gpx.setVersion("1.1");
+
+		// Create a new JAXBElement<GpxType> for the marshaller
+		QName qName = new QName("http://www.topografix.com/GPX/1/1", "gpx");
+		JAXBElement<GpxType> root = new JAXBElement<GpxType>(qName, GpxType.class, gpx);
+		// Create a context
+		JAXBContext jc = JAXBContext.newInstance(GPX_TRACKPOINTEXTENSIONV2_PACKAGE);
+		// Create a marshaller
+		Marshaller marshaller = jc.createMarshaller();
+		// Set it to be formatted, otherwise it is one long line
+		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+		// Need to set the schema location to pass Xerces 3.1.1 SaxCount
+		marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION,
+				"http://www.topografix.com/GPX/1/1" + " http://www.topografix.com/GPX/1/1/gpx.xsd");
+		// Marshal
+		marshaller.marshal(root, out);
 	}
 
 	/**
@@ -551,24 +583,8 @@ public class GPXParser {
 			gpx.setCreator("GPXParser");
 			// Reset the version
 			gpx.setVersion("1.1");
-
-			try {// Create a new JAXBElement<GpxType> for the marshaller
-				QName qName = new QName("http://www.topografix.com/GPX/1/1", "gpx");
-				JAXBElement<GpxType> root = new JAXBElement<GpxType>(qName, GpxType.class, gpx);
-				// Create a context
-				JAXBContext jc = JAXBContext.newInstance(GPX_TRACKPOINTEXTENSIONV2_PACKAGE);
-				// Create a marshaller
-				Marshaller marshaller = jc.createMarshaller();
-				// Set it to be formatted, otherwise it is one long line
-				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-				// Need to set the schema location to pass Xerces 3.1.1 SaxCount
-				marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION,
-						"http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd");
-				// Set the Marshaller.JAXB_NO_NAMESPACE_SCHEMA_LOCATION
-				marshaller.setProperty(Marshaller.JAXB_NO_NAMESPACE_SCHEMA_LOCATION,
-						"https://www.garmin.com/xmlschemas/TrackPointExtensionv2.xsd");
-				// Marshal
-				marshaller.marshal(root, System.out);
+			try {
+				print("GPXParser", gpx, System.out);
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
