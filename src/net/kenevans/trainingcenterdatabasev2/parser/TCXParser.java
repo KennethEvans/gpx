@@ -26,6 +26,7 @@ import net.kenevans.trainingcenterdatabasev2.ActivityLapT;
 import net.kenevans.trainingcenterdatabasev2.ActivityListT;
 import net.kenevans.trainingcenterdatabasev2.ActivityT;
 import net.kenevans.trainingcenterdatabasev2.HeartRateInBeatsPerMinuteT;
+import net.kenevans.trainingcenterdatabasev2.ObjectFactory;
 import net.kenevans.trainingcenterdatabasev2.PlanT;
 import net.kenevans.trainingcenterdatabasev2.PositionT;
 import net.kenevans.trainingcenterdatabasev2.SensorStateT;
@@ -58,6 +59,7 @@ public class TCXParser
     /**
      * Save a TrainingCenterDatabaseT object into a file with the given name.
      * 
+     * @param creator
      * @param tcx
      * @param fileName
      * @throws JAXBException
@@ -70,6 +72,7 @@ public class TCXParser
     /**
      * Save a TrainingCenterDatabaseT object into a File.
      * 
+     * @param creator
      * @param tcx
      * @param file
      * @throws JAXBException
@@ -102,7 +105,8 @@ public class TCXParser
      * the same as save() except the last line writes to the OutputStream
      * instead of a File.
      * 
-     * @param gpx
+     * @param creator
+     * @param tcx
      * @param out
      * @throws JAXBException
      */
@@ -132,10 +136,11 @@ public class TCXParser
     }
 
     /**
-     * Parses a GPX file with the given name.
+     * Parses a TCX file with the given name.
      * 
      * @param fileName The file name to parse.
-     * @return The GpxType corresponding to the top level of the input file.
+     * @return The TrainingCenterDatabaseT corresponding to the top level of the
+     *         input file.
      * @throws JAXBException
      */
     public static TrainingCenterDatabaseT parse(String fileName)
@@ -155,15 +160,15 @@ public class TCXParser
     public static TrainingCenterDatabaseT parse(File file)
         throws JAXBException {
         TrainingCenterDatabaseT tcx = null;
-        JAXBContext jc = JAXBContext
-            .newInstance(TRAINING_CENTER_DATABASE_V2_PACKAGE);
+        ObjectFactory objectFactory = new ObjectFactory();
+        JAXBContext jc = JAXBContext.newInstance(objectFactory.getClass());
         Unmarshaller unmarshaller = jc.createUnmarshaller();
         try {
             JAXBElement<TrainingCenterDatabaseT> root = (JAXBElement<TrainingCenterDatabaseT>)unmarshaller
                 .unmarshal(file);
             tcx = root.getValue();
         } catch(JAXBException ex) {
-            // Some other problem, rethrow the exception
+            // Throw the exception (Done this way to be similar to GPX parser)
             throw (ex);
         }
         return tcx;
@@ -212,10 +217,10 @@ public class TCXParser
         person = new PersonType();
         person.setName(AUTHOR);
         metadata.setAuthor(person);
-        desc = getMetadataDescriptionFromTcx(tcx);
-        if(desc != null) {
-            metadata.setDesc(desc);
-        }
+        // desc = getMetadataDescriptionFromTcx(tcx);
+        // if(desc != null) {
+        // metadata.setDesc(desc);
+        // }
         gpxNew.setMetadata(metadata);
 
         // Check if some trackpoints have position and some not.
@@ -289,9 +294,7 @@ public class TCXParser
                             continue;
                         }
                         ele = trackPoint.getAltitudeMeters();
-                        if(ele == null) {
-                            trkpt.setEle(BigDecimal.valueOf(0));
-                        } else {
+                        if(ele != null) {
                             trkpt.setEle(BigDecimal.valueOf(ele));
                         }
                         time = trackPoint.getTime();
