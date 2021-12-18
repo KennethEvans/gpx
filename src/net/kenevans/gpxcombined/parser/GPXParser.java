@@ -101,6 +101,10 @@ public class GPXParser
         marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION,
             "http://www.topografix.com/GPX/1/1"
                 + " http://www.topografix.com/GPX/1/1/gpx.xsd");
+        // Need to set this so it won't use <ns2:gpx...
+        marshaller.setProperty(Marshaller.JAXB_NO_NAMESPACE_SCHEMA_LOCATION,
+            "http://www.topografix.com/GPX/1/1"
+                + " http://www.topografix.com/GPX/1/1/gpx.xsd");
         // Marshal
         marshaller.marshal(root, file);
     }
